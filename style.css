@@ -41,24 +41,24 @@ body{
     inset 0 0 30px rgba(255,255,255,0.25);
 
   transition: all 0.5s ease;
-
 }
+
   
-  .pillar::before{
-    content:"";
-    position:absolute;
-    top:-10px;
-    left:-6px;
-    width:82px;
-    height:14px;
-    border-radius:3px;
-    background:
-      linear-gradient(
-        to bottom,
-        #8a8a8a,
-        #555
-      );
-  }
+.pillar::before{
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:-6px;
+  width:82px;
+  height:14px;
+  border-radius:3px;
+  background:
+    linear-gradient(
+      to bottom,
+      #8a8a8a,
+      #555
+    );
+}
 
 .pillar{
   width: 70px;
@@ -164,8 +164,7 @@ body{
   }
 }
 
-
-.evocation{
+#magic-circle.evocation{
   background:
     radial-gradient(
       circle,

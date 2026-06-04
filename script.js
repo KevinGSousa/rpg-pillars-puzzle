@@ -29,6 +29,7 @@ const schools = [
 const gameContainer = document.getElementById("game-container");
 const magicCircle = document.getElementById("magic-circle");
 
+
 // Função para renderizar os pilares em um círculo
 function renderPillars() {
   schools.forEach((school, index) => {
@@ -83,7 +84,20 @@ void magicCircle.offsetWidth;
 
 magicCircle.classList.add(id);
 
-  pillar.classList.add("active");
+pillar.classList.add("active");
+
+setTimeout(() => {
+
+  magicCircle.classList.remove(
+    "abjuration",
+    "transmutation",
+    "evocation",
+    "necromancy",
+    "illusion"
+  );
+
+}, 10000);
+
 }
 
 
