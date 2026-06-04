@@ -1,0 +1,269 @@
+body{
+  background:#111;
+  color:white;
+  font-family:Arial, sans-serif;
+  text-align:center;
+}
+
+
+
+#riddle{
+  max-width:700px;
+  margin:20px auto;
+}
+
+#game-container{
+  width:600px;
+  height:600px;
+  margin:40px auto;
+  position:relative;
+  border-radius:50%;
+  border:2px solid #444;
+}
+
+#magic-circle{
+  width:180px;
+  height:180px;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(220,220,220,0.95),
+      rgba(120,120,120,0.7)
+    );
+
+  box-shadow:
+    0 0 25px rgba(255,255,255,0.15),
+    inset 0 0 30px rgba(255,255,255,0.25);
+
+  transition: all 0.5s ease;
+
+}
+  
+  .pillar::before{
+    content:"";
+    position:absolute;
+    top:-10px;
+    left:-6px;
+    width:82px;
+    height:14px;
+    border-radius:3px;
+    background:
+      linear-gradient(
+        to bottom,
+        #8a8a8a,
+        #555
+      );
+  }
+
+.pillar{
+  width: 70px;
+  height: 140px;
+  position:absolute;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    linear-gradient(
+      to right,
+      #2b2b2b,
+      #575757,
+      #2b2b2b
+    );
+  border:1px solid #888;
+  border-radius:4px;
+  box-shadow:
+    inset 2px 0 4px rgba(255,255,255,0.15),
+    inset -2px 0 4px rgba(0,0,0,0.4),
+    0 0 15px rgba(0,0,0,0.7);
+  transition:0.25s;
+}
+
+.pillar-base{
+  position:absolute;
+  bottom:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90px;
+  height:18px;
+  border-radius:4px;
+  background:
+    linear-gradient(
+      to bottom,
+      #888,
+      #444
+    );
+  box-shadow:
+    0 2px 5px rgba(0,0,0,0.5);
+}
+
+.pillar:hover{
+  transform:translateY(-5px);
+
+  box-shadow:
+    inset 2px 0 4px rgba(255,255,255,0.15),
+    inset -2px 0 4px rgba(0,0,0,0.4),
+    0 0 20px rgba(255,0,0,0.35);
+}
+
+.pillar.active{
+  border-color: #ff4444;
+  box-shadow:
+    0 0 15px rgba(255,0,0,0.5),
+    0 0 30px rgba(255,0,0,0.2);
+  transform: translateY(-5px);
+}
+
+.symbol{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  pointer-events:none;
+  filter:
+    drop-shadow(0 0 5px rgba(255,0,0,0.8))
+    drop-shadow(0 0 12px rgba(255,0,0,0.4));
+}
+
+.abjuration{
+  background:
+    radial-gradient(
+      circle,
+      #d9ffff 0%,
+      #70d8ff 70%,
+      #2b8cff 100%
+    );
+
+  box-shadow:
+    0 0 25px #70d8ff,
+    0 0 50px #70d8ff,
+    0 0 80px rgba(112,216,255,0.6);
+  border: 3px solid rgba(255,255,255,0.8);
+  animation: shieldPulse 1.2s;
+}
+@keyframes shieldPulse{
+  0%{
+    box-shadow:
+      0 0 5px #70d8ff;
+  }
+
+  50%{
+    box-shadow:
+      0 0 35px #70d8ff,
+      0 0 80px rgba(112,216,255,0.8);
+  }
+
+  100%{
+    box-shadow:
+      0 0 25px #70d8ff;
+  }
+}
+
+
+.evocation{
+  background:
+    radial-gradient(
+      circle,
+      #fff2b0,
+      #ff9900,
+      #cc3300
+    );
+
+  animation: evokeBurst 0.5s;
+  box-shadow:
+    0 0 30px orange,
+    0 0 70px red,
+    0 0 120px yellow;
+}
+@keyframes evokeBurst{
+
+  0%{
+    transform:
+      translate(-50%, -50%)
+      scale(0.8);
+  }
+
+  50%{
+    transform:
+      translate(-50%, -50%)
+      scale(1.35);
+  }
+  100%{
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+}
+
+
+.transmutation{
+  animation: morphStone 1.5s;
+}@keyframes morphStone{
+  0%{
+    border-radius:50%;
+  }
+
+  50%{
+    border-radius:10%;
+    transform:
+      translate(-50%, -50%)
+      rotate(45deg);
+  }
+  100%{
+    border-radius:50%;
+  }
+}
+
+
+.illusion{
+  animation: illusionShift 3.5s;
+}@keyframes illusionShift{
+
+  0%{
+    background: radial-gradient(circle,#66ffff,#9966ff);
+  }
+
+  50%{
+    background: radial-gradient(circle,#ff66ff,#6666ff);
+  }
+
+  100%{
+    background: radial-gradient(circle,#66ffff,#9966ff);
+  }
+
+}
+
+.necromancy{
+
+  background:
+    radial-gradient(
+      circle,
+      #8d3cff,
+      #2a0033,
+      #000000
+    );
+
+  box-shadow:
+    0 0 30px #7d2cff,
+    inset 0 0 50px black;
+
+  animation: deathPulse 2s infinite;
+}@keyframes deathPulse{
+
+  0%{
+    filter: brightness(1);
+  }
+
+  50%{
+    filter: brightness(0.45);
+  }
+
+  100%{
+    filter: brightness(1);
+  }
+}
