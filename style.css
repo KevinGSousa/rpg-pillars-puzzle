@@ -1,15 +1,25 @@
-body{
-  background:#111;
-  color:white;
-  font-family:Arial, sans-serif;
-  text-align:center;
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+body {
+    background-image:
+  linear-gradient( rgb(0, 0, 0),rgba(0,0,0,0.45), rgba(0, 0, 0, 0.822)),
+  url("./assets/images/Sky.png");
+
+  background-size: cover;
+  background-position: center;
+
+  color: #4b00faad;
+  font-family: 'Cinzel', serif;
+  text-align: center;
 }
 
-
-
-#riddle{
-  max-width:700px;
-  margin:20px auto;
+#riddle {
+  max-width: 700px;
+  margin: 20px auto;
+  font-style: italic;
+  font-weight: bold;
+  color: #fcfcfc;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 #game-container{
@@ -60,64 +70,46 @@ body{
     );
 }
 
-.pillar{
+.pillar {
   width: 70px;
   height: 140px;
-  position:absolute;
-  cursor:pointer;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  background:
-    linear-gradient(
-      to right,
-      #2b2b2b,
-      #575757,
-      #2b2b2b
-    );
-  border:1px solid #888;
-  border-radius:4px;
+  /* Gradiente simulando pedra esculpida e chanfrada */
+  background: linear-gradient(to right, #1c1d1f, #33363a, #1c1d1f);
+  border: 2px solid #54585f; /* Cor de pedra rachada */
+  border-radius: 6px;
   box-shadow:
-    inset 2px 0 4px rgba(255,255,255,0.15),
-    inset -2px 0 4px rgba(0,0,0,0.4),
-    0 0 15px rgba(0,0,0,0.7);
-  transition:0.25s;
+    inset 2px 2px 4px rgba(255,255,255,0.05),
+    inset -2px -2px 4px rgba(0,0,0,0.6),
+    0 10px 20px rgba(0,0,0,0.7);
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.pillar-base{
-  position:absolute;
-  bottom:-12px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90px;
-  height:18px;
-  border-radius:4px;
-  background:
-    linear-gradient(
-      to bottom,
-      #888,
-      #444
-    );
-  box-shadow:
-    0 2px 5px rgba(0,0,0,0.5);
+/* A base do pilar também em pedra mais escura */
+.pillar-base {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86px;
+  height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #2d3033, #151718);
+  border-top: 1px solid #45494e;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
-.pillar:hover{
-  transform:translateY(-5px);
-
-  box-shadow:
-    inset 2px 0 4px rgba(255,255,255,0.15),
-    inset -2px 0 4px rgba(0,0,0,0.4),
-    0 0 20px rgba(255,0,0,0.35);
-}
-
-.pillar.active{
-  border-color: #ff4444;
-  box-shadow:
-    0 0 15px rgba(255,0,0,0.5),
-    0 0 30px rgba(255,0,0,0.2);
+.pillar:hover {
   transform: translateY(-5px);
+  border-color: rgba(0, 225, 255, 0.35);
+  box-shadow:
+    inset 2px 2px 4px rgba(255,255,255,0.08),
+    0 0 25px rgb(0, 159, 187);
 }
 
 .symbol{
@@ -126,11 +118,11 @@ body{
   object-fit:contain;
   pointer-events:none;
   filter:
-    drop-shadow(0 0 5px rgba(255,0,0,0.8))
-    drop-shadow(0 0 12px rgba(255,0,0,0.4));
+    drop-shadow(0 0 5px rgba(38, 0, 255, 0.8))
+    drop-shadow(0 0 12px rgba(85, 55, 255, 0.8));
 }
 
-.abjuration{
+#magic-circle.abjuration{
   background:
     radial-gradient(
       circle,
@@ -164,44 +156,44 @@ body{
   }
 }
 
-#magic-circle.evocation{
-  background:
-    radial-gradient(
-      circle,
-      #fff2b0,
-      #ff9900,
-      #cc3300
-    );
-
-  animation: evokeBurst 0.5s;
+#magic-circle.evocation {
+  background: radial-gradient(circle, #fff2b0, #ff9900, #cc3300);
+  /* Sombra interna para dar volume de chamas e externa para o brilho */
   box-shadow:
-    0 0 30px orange,
-    0 0 70px red,
-    0 0 120px yellow;
+    0 0 30px #ff9900,
+    0 0 70px #cc3300,
+    0 0 90px #ffee00,
+    inset 0 0 40px rgba(204, 51, 0, 0.8);
+  animation: evokeBurst 0.8s ease-out;
 }
-@keyframes evokeBurst{
-
-  0%{
-    transform:
-      translate(-50%, -50%)
-      scale(0.8);
+@keyframes evokeBurst {
+  0% {
+    /* Começa do tamanho normal para não dar engasgo */
+    transform: translate(-50%, -50%) scale(1);
+    filter: brightness(1) contrast(1);
   }
-
-  50%{
-    transform:
-      translate(-50%, -50%)
-      scale(1.35);
+  30% {
+    /* O ápice da explosão de energia (cresce e brilha intensamente) */
+    transform: translate(-50%, -50%) scale(1.4);
+    filter: brightness(1.6) contrast(1.2);
+    box-shadow:
+      0 0 60px #fff2b0,
+      0 0 120px #ff9900,
+      0 0 150px #cc3300,
+      inset 0 0 60px #fff2b0;
   }
-  100%{
-    transform:
-      translate(-50%, -50%)
-      scale(1);
+  100% {
+    /* Retorna ao tamanho normal, mantendo a aura de chamas da classe .evocation */
+    transform: translate(-50%, -50%) scale(1);
+    filter: brightness(1) contrast(1);
   }
 }
 
 
-.transmutation{
-  animation: morphStone 1.5s;
+#magic-circle.transmutation{
+  animation: morphStone 1.5s infinite;
+  box-shadow: #5191e6b6 0 0 20px,
+    inset 0 0 30px #555;
 }@keyframes morphStone{
   0%{
     border-radius:50%;
@@ -219,25 +211,25 @@ body{
 }
 
 
-.illusion{
-  animation: illusionShift 3.5s;
-}@keyframes illusionShift{
-
-  0%{
-    background: radial-gradient(circle,#66ffff,#9966ff);
+#magic-circle.illusion {
+  /* Define uma cor base exótica */
+  background: radial-gradient(circle, #910065, #3a002d);
+  box-shadow: 0 0 40px #910065, inset 0 0 30px #000;
+  animation: illusionShift 3s linear infinite;
+}
+@keyframes illusionShift {
+  0% {
+    filter: hue-rotate(0deg) contrast(1);
   }
-
-  50%{
-    background: radial-gradient(circle,#ff66ff,#6666ff);
+  50% {
+    filter: hue-rotate(180deg) contrast(1.5);
   }
-
-  100%{
-    background: radial-gradient(circle,#66ffff,#9966ff);
+  100% {
+    filter: hue-rotate(360deg) contrast(1);
   }
-
 }
 
-.necromancy{
+#magic-circle.necromancy{
 
   background:
     radial-gradient(

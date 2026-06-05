@@ -29,6 +29,16 @@ const schools = [
 const gameContainer = document.getElementById("game-container");
 const magicCircle = document.getElementById("magic-circle");
 
+// Ordem correta dos pilares para resolver o enigma
+const solution = [
+  "abjuration",
+  "transmutation",
+  "evocation",
+  "illusion",
+  "necromancy"
+];
+
+let currentStep = 0;
 
 // Função para renderizar os pilares em um círculo
 function renderPillars() {
@@ -86,7 +96,7 @@ magicCircle.classList.add(id);
 
 pillar.classList.add("active");
 
-setTimeout(() => {
+/* setTimeout(() => {
 
   magicCircle.classList.remove(
     "abjuration",
@@ -96,8 +106,8 @@ setTimeout(() => {
     "illusion"
   );
 
-}, 10000);
-
+}, 9000);
+ */
 }
 
 
