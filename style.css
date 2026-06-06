@@ -41,6 +41,9 @@ body {
 
   opacity:0;
   transition:0.5s;
+  backdrop-filter: blur(6px);
+  box-shadow:
+  0 0 15px rgba(100,150,255,0.25);
 }
 
 #game-container{

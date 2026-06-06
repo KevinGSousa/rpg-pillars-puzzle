@@ -29,6 +29,48 @@ const schools = [
 const gameContainer = document.getElementById("game-container");
 const magicCircle = document.getElementById("magic-circle");
 
+const sounds = {
+
+  click: new Audio("./assets/audio/select_magic.mp3"),
+
+  success: new Audio("./assets/audio/success.mp3"),
+
+  failure: new Audio("./assets/audio/failure.mp3"),
+
+  completion: new Audio("./assets/audio/magic_success.mp3"),
+
+  dissipate: new Audio("./assets/audio/dissipate.mp3"),
+
+  reform: new Audio("./assets/audio/reform.mp3"),
+
+  abjuration: new Audio("./assets/audio/abjuration.mp3"),
+
+  transmutation: new Audio("./assets/audio/transmutation.mp3"),
+
+  evocation: new Audio("./assets/audio/evocation.mp3"),
+
+  illusion: new Audio("./assets/audio/illusion.mp3"),
+
+  necromancy: new Audio("./assets/audio/necromancy.mp3")
+};
+
+// Volume dos sons
+sounds.click.volume = 0.15;
+
+sounds.success.volume = 0.25;
+sounds.failure.volume = 0.35;
+
+sounds.completion.volume = 0.50;
+
+sounds.dissipate.volume = 0.30;
+sounds.reform.volume = 0.20;
+
+sounds.abjuration.volume = 0.20;
+sounds.transmutation.volume = 0.20;
+sounds.evocation.volume = 0.25;
+sounds.illusion.volume = 0.20;
+sounds.necromancy.volume = 0.25;
+
 // Ordem correta dos pilares para resolver o enigma
 const solution = [
   "abjuration",
@@ -54,10 +96,20 @@ const failureMessages = [
   "Se não enxergas a resposta, não enxergará mais nada. Você fica cego até o fim da cena.",
   "A energia incorreta debilita sua mana. Você fica alquebrado até o fim da cena."
 ];
+
 let currentStep = 0;
 let failures = 0;
 let isAnimating = false;
 let puzzleSolved = false;
+
+let messageTimeout;
+
+// Função para tocar sons, garantindo que eles possam ser reproduzidos mesmo que já estejam tocando
+function playSound(sound){
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+}
+
 
 // Função para renderizar os pilares em um círculo
 function renderPillars() {
@@ -96,15 +148,18 @@ function renderPillars() {
 
 // Função para verificar a sequência dos pilares
 function checkSequence(id, pillar){
-  // Mostra o efeito visual da escola
-  activateSchool(id);
-  const expectedSchool = solution[currentStep];
-
+  
   if(isAnimating || puzzleSolved){
     return;
   }
+  playSound(sounds.click);
   activateSchool(id);
+  const expectedSchool = solution[currentStep];
+  
   if(id === expectedSchool){
+    if(sounds[id]){
+      playSound(sounds[id]);
+    }
     pillar.classList.add("active");
     currentStep++;
     updateProgress();
@@ -113,6 +168,7 @@ function checkSequence(id, pillar){
     }
   } else {
     failures++;
+    playSound(sounds.failure);
     checkPunishments();
     if(failures % 2 === 0){
       randomFailureMessage();
@@ -120,10 +176,12 @@ function checkSequence(id, pillar){
     console.log("Errou!");
     isAnimating = true;
     setTimeout(() => {
+      playSound(sounds.dissipate);
       gameContainer.classList.add("dissipating");
       setTimeout(() => {
         resetPuzzle();
         gameContainer.classList.remove("dissipating");
+        playSound(sounds.reform);
         gameContainer.classList.add("reforming");
 
         setTimeout(() => {
@@ -228,13 +286,15 @@ function checkPunishments(){
 // Função para mostrar mensagens temporárias
 function showMessage(text){
   const box = document.getElementById("message-box");
+  clearTimeout(messageTimeout);
+
   box.textContent = text;
   box.style.opacity = "1";
-  setTimeout(() => {
-    box.style.opacity = "0";
-  }, 3000);
-}
 
+  messageTimeout = setTimeout(() => {
+    box.style.opacity = "0";
+  }, 6000);
+}
 // Função para ativar um pilar
 function activateSchool(id){
   magicCircle.classList.remove(
@@ -251,6 +311,7 @@ function activateSchool(id){
 // Função para completar o puzzle
 function completePuzzle(){
   puzzleSolved = true;
+  playSound(sounds.completion);
   magicCircle.classList.remove(
     "abjuration",
     "transmutation",
