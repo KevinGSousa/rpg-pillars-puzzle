@@ -148,7 +148,7 @@ function renderPillars() {
 
 // Função para verificar a sequência dos pilares
 function checkSequence(id, pillar){
-  
+
   if(isAnimating || puzzleSolved){
     return;
   }
@@ -212,6 +212,25 @@ function resetPuzzle(){
     "stage-3",
     "stage-4",
     "completed"
+  );
+}
+
+function restartPuzzle(){
+  if(isAnimating){
+    return;
+  }
+  currentStep = 0;
+
+  failures = 0;
+
+  puzzleSolved = false;
+
+  isAnimating = false;
+
+  resetPuzzle();
+
+  showMessage(
+    "O ritual foi reiniciado."
   );
 }
 
@@ -324,4 +343,7 @@ function completePuzzle(){
   );
 }
 
+document
+  .getElementById("reset-button")
+  .addEventListener("click", restartPuzzle);
 renderPillars();

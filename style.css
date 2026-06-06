@@ -404,3 +404,30 @@ body {
     transform: scale(1);
   }
 }
+
+#reset-button{
+  position:absolute;
+  right:30px;
+  bottom:30px;
+  padding:10px 16px;
+  background:rgba(0,0,0,0.75);
+  color:white;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:8px;
+  cursor:pointer;
+  font-family:'Cinzel', serif;
+  transition:all 0.3s ease;
+}
+
+#reset-button:hover{
+  border-color:rgba(100,150,255,0.8);
+
+  box-shadow:
+    0 0 10px rgba(100,150,255,0.4);
+
+  transform:translateY(-2px);
+}
+
+#reset-button:active{
+  transform:translateY(0);
+}
