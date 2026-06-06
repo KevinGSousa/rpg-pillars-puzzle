@@ -22,6 +22,27 @@ body {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
+#message-box{
+  position:absolute;
+  right:30px;
+  top:50%;
+  transform:translateY(-50%);
+  max-width:300px;
+  width:300px;
+  text-align:left;
+
+  padding:12px 20px;
+
+  color:white;
+  background:rgba(0,0,0,0.75);
+
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:8px;
+
+  opacity:0;
+  transition:0.5s;
+}
+
 #game-container{
   width:600px;
   height:600px;
@@ -29,6 +50,92 @@ body {
   position:relative;
   border-radius:50%;
   border:2px solid #444;
+  transition: all 0.6s ease;
+
+  background-image: url("./assets/images/Circle_off.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#game-container.completed{
+  background-image: url("./assets/images/Circle_on.png");
+  box-shadow:
+    0 0 30px rgba(100,150,255,1),
+    0 0 60px rgba(100,150,255,0.8),
+    0 0 100px rgba(100,150,255,0.6);
+  animation: ritualAwakened 3s infinite alternate;
+  animation:
+    ritualAwakened 3s infinite alternate,
+    finalPulse 2s infinite;
+}
+
+#game-container.stage-1 {
+    box-shadow: 0 0 15px rgba(100, 150, 255, 0.3);
+}
+
+#game-container.stage-2 {
+    box-shadow: 0 0 25px rgba(100, 150, 255, 0.5);
+}
+
+#game-container.stage-3 {
+    box-shadow: 0 0 40px rgba(100, 150, 255, 0.7);
+}
+
+#game-container.stage-4 {
+    box-shadow: 0 0 60px rgba(100, 150, 255, 0.9);
+}
+
+#game-container.dissipating {
+    animation: energyFade 1.5s forwards;
+}@keyframes energyFade {
+
+    0% {
+        filter: brightness(1);
+        box-shadow: 0 0 40px rgba(120,180,255,0.8);
+    }
+
+    50% {
+        filter: brightness(0.7);
+        box-shadow: 0 0 20px rgba(120,180,255,0.4);
+    }
+
+    100% {
+        filter: brightness(0);
+        box-shadow: none;
+    }
+
+}@keyframes ritualAwakened {
+
+    from {
+        filter: brightness(1);
+    }
+
+    to {
+        filter: brightness(1.3);
+    }
+
+}
+
+#game-container.reforming {
+    animation: energyReform 1.5s forwards;
+}@keyframes energyReform {
+
+    0% {
+        filter: brightness(0);
+        opacity: 0.2;
+    }
+
+    50% {
+        filter: brightness(0.5);
+        opacity: 0.6;
+    }
+
+    100% {
+        filter: brightness(1);
+        opacity: 1;
+    }
+
 }
 
 #magic-circle{
@@ -112,6 +219,26 @@ body {
     0 0 25px rgb(0, 159, 187);
 }
 
+.pillar.active{
+
+  border-color: #1302f7;
+
+  box-shadow:
+    0 0 15px rgba(126,200,255,0.8),
+    0 0 30px rgba(126,200,255,0.5);
+
+  background: linear-gradient(to right, #1c1d1f, #33363a, #1c1d1f);
+}
+
+.pillar.active .symbol{
+
+  filter:
+    drop-shadow(0 0 10px #7ec8ff)
+    drop-shadow(0 0 20px #7ec8ff);
+
+  transform: scale(1.15);
+}
+
 .symbol{
   width:48px;
   height:48px;
@@ -120,6 +247,7 @@ body {
   filter:
     drop-shadow(0 0 5px rgba(38, 0, 255, 0.8))
     drop-shadow(0 0 12px rgba(85, 55, 255, 0.8));
+  transition: all 0.3s ease;
 }
 
 #magic-circle.abjuration{
@@ -256,5 +384,20 @@ body {
 
   100%{
     filter: brightness(1);
+  }
+}
+
+@keyframes finalPulse {
+
+  0%{
+    transform: scale(1);
+  }
+
+  50%{
+    transform: scale(1.05);
+  }
+
+  100%{
+    transform: scale(1);
   }
 }

@@ -38,11 +38,30 @@ const solution = [
   "necromancy"
 ];
 
+const shuffledSchools = [...schools]
+  .sort(() => Math.random() - 0.5);
+
+const failureMessages = [
+  "As runas não estão alinhadas.",
+  "A energia se dispersa.",
+  "Os pilares rejeitam sua tentativa.",
+  "O círculo mágico perde estabilidade.",
+  "A compreensão se escapa das suas mãos.",
+  "Sua alma sente o peso do fracasso. Você recebe 5 de dano mental.",
+  "A mana é parte do ciclo, e o ciclo é parte da mana. O fracasso é apenas um passo para a compreensão. Você perde 10 de mana.",
+  "Uma onda de energia negativa se espalha, causando uma sensação de desespero. Você se sente fatigado.",
+  "Um grito ecoa em sua mente várias vezes, causando uma dor intensa. Você recebe 10 de dano mental.",
+  "Se não enxergas a resposta, não enxergará mais nada. Você fica cego até o fim da cena.",
+  "A energia incorreta debilita sua mana. Você fica alquebrado até o fim da cena."
+];
 let currentStep = 0;
+let failures = 0;
+let isAnimating = false;
+let puzzleSolved = false;
 
 // Função para renderizar os pilares em um círculo
 function renderPillars() {
-  schools.forEach((school, index) => {
+  shuffledSchools.forEach((school, index) => {
     const pillar = document.createElement("div");
     pillar.classList.add("pillar");
     const symbol = document.createElement("img");
@@ -56,7 +75,7 @@ function renderPillars() {
     pillar.appendChild(base);
 
     pillar.addEventListener("click", () => {
-      activateSchool(school.id, pillar);
+      checkSequence(school.id, pillar);
     });
     
     const angle =
@@ -75,29 +94,53 @@ function renderPillars() {
   
 }
 
-// Função para ativar um pilar
-function activateSchool(id, pillar){
+// Função para verificar a sequência dos pilares
+function checkSequence(id, pillar){
+  // Mostra o efeito visual da escola
+  activateSchool(id);
+  const expectedSchool = solution[currentStep];
 
+  if(isAnimating || puzzleSolved){
+    return;
+  }
+  activateSchool(id);
+  if(id === expectedSchool){
+    pillar.classList.add("active");
+    currentStep++;
+    updateProgress();
+    if(currentStep === solution.length){
+      completePuzzle();
+    }
+  } else {
+    failures++;
+    checkPunishments();
+    if(failures % 2 === 0){
+      randomFailureMessage();
+    }
+    console.log("Errou!");
+    isAnimating = true;
+    setTimeout(() => {
+      gameContainer.classList.add("dissipating");
+      setTimeout(() => {
+        resetPuzzle();
+        gameContainer.classList.remove("dissipating");
+        gameContainer.classList.add("reforming");
+
+        setTimeout(() => {
+          gameContainer.classList.remove("reforming");
+          isAnimating = false;
+        }, 1200);
+      }, 1200);
+    }, 2000);
+  }
+}
+
+// Função para resetar o puzzle
+function resetPuzzle(){
+  currentStep = 0;
   document.querySelectorAll(".pillar").forEach(p => {
     p.classList.remove("active");
   });
-
-magicCircle.classList.remove(
-  "abjuration",
-  "transmutation",
-  "evocation",
-  "necromancy",
-  "illusion"
-);
-
-void magicCircle.offsetWidth;
-
-magicCircle.classList.add(id);
-
-pillar.classList.add("active");
-
-/* setTimeout(() => {
-
   magicCircle.classList.remove(
     "abjuration",
     "transmutation",
@@ -105,10 +148,119 @@ pillar.classList.add("active");
     "necromancy",
     "illusion"
   );
-
-}, 9000);
- */
+  gameContainer.classList.remove(
+    "stage-1",
+    "stage-2",
+    "stage-3",
+    "stage-4",
+    "completed"
+  );
 }
 
+// Função para atualizar o progresso visual do círculo mágico
+function updateProgress() {
+  gameContainer.classList.remove(
+    "stage-1",
+    "stage-2",
+    "stage-3",
+    "stage-4",
+    "completed"
+  );
+
+  switch(currentStep){
+
+    case 1:
+      gameContainer.classList.add("stage-1");
+      break;
+
+    case 2:
+      gameContainer.classList.add("stage-2");
+      break;
+
+    case 3:
+      gameContainer.classList.add("stage-3");
+      break;
+
+    case 4:
+      gameContainer.classList.add("stage-4");
+      break;
+
+    case 5:
+      gameContainer.classList.add("completed");
+      break;
+  }
+}
+
+// Função para mostrar uma mensagem de falha aleatória
+function randomFailureMessage() {
+  const msg =
+    failureMessages[
+      Math.floor(Math.random() * failureMessages.length)
+    ];
+
+  showMessage(msg);
+}
+
+// Função para mostrar punições baseadas no número de falhas
+function checkPunishments(){
+  if(failures === 3){
+  showMessage(
+      "Um choro distante ecoa pelo ambiente... Você sente um arrepio na espinha, algo parece ter sido despertado."
+    );
+  }
+  if(failures === 5){
+    showMessage(
+      "O círculo consome parte da energia acumulada. Você sente uma fraqueza momentânea enquanto algo parece te notar..."
+    );
+  }
+  if(failures === 9){
+    showMessage(
+      "Uma presença sombria parece se aproximar de você. O ambiente fica mais frio, e uma sensação de desespero te envolve. Você sente que algo está muito perto de te encontrar..."
+    );
+  }
+  if(failures === 11){
+    showMessage(
+      "Uma voz sussurrante ecoa em seus ouvidos: 'Você não está pronto para enfrentar o mistério.' O ambiente se torna opressivo, e uma sensação de medo intenso te domina. Faça um teste de iniciativa."
+    );
+  }
+}
+
+// Função para mostrar mensagens temporárias
+function showMessage(text){
+  const box = document.getElementById("message-box");
+  box.textContent = text;
+  box.style.opacity = "1";
+  setTimeout(() => {
+    box.style.opacity = "0";
+  }, 3000);
+}
+
+// Função para ativar um pilar
+function activateSchool(id){
+  magicCircle.classList.remove(
+    "abjuration",
+    "transmutation",
+    "evocation",
+    "necromancy",
+    "illusion"
+  );
+  void magicCircle.offsetWidth;
+  magicCircle.classList.add(id);
+}
+
+// Função para completar o puzzle
+function completePuzzle(){
+  puzzleSolved = true;
+  magicCircle.classList.remove(
+    "abjuration",
+    "transmutation",
+    "evocation",
+    "necromancy",
+    "illusion"
+);
+  showMessage(
+    "O ritual foi concluído. A passagem foi despertada."
+  );
+}
 
 renderPillars();
