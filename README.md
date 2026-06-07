@@ -52,3 +52,6 @@ A ideia é transformar enigmas tradicionais em experiências interativas que pos
 ## Licença
 
 Projeto criado para fins educacionais, criativos e de entretenimento.
+
+## Jogar agora
+https://kevingsousa.github.io/rpg-pillars-puzzle/
